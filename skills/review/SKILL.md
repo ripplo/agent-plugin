@@ -13,7 +13,7 @@ Everything comes from the CLI. Never query Ripplo any other way. When the input 
 npx ripplo review start <prUrl> [--depth fast|deep] [--app-url <url>] [--auth <name>]   # review the latest commit, prints codeReviewId (JSON)
 npx ripplo review status <codeReviewId>     # stage, reviewed commit, and latest commit (JSON)
 npx ripplo review comment <codeReviewId> "<body>" [--issue <number>]   # a comment the next review round reads and answers (JSON)
-npx ripplo review <codeReviewId>            # open issues of the review and gaps of the published attempt (JSON)
+npx ripplo review <codeReviewId>            # open issues of the review and uncoverable workflows of the published attempt (JSON)
 npx ripplo explain <runId>                  # failures per starting state and step, with nearby evidence (JSON)
 npx ripplo snapshot <runId> --offset <ms>   # PNG + rrweb-tagged HTML of that frame
 ```
@@ -47,4 +47,4 @@ Issues are independent. Fan out to subagents when there are many, one issue or o
 
 ## Finish
 
-Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `gaps` is not empty, say how many workflows the review could not cover. When some have `appChangeCanCover` true, say that `/ripplo:cover <codeReviewId>` adds what those need. Say that Ripplo cannot cover the rest yet and that the user can contact Ripplo at mail@ripplo.ai about them. Do not act on gaps here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.
+Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `uncoverable` is not empty, say how many workflows the review could not cover. When some have `appChangeCanCover` true, say that `/ripplo:cover <codeReviewId>` adds what those need. Say that Ripplo cannot cover the rest yet and that the user can contact Ripplo at mail@ripplo.ai about them. Do not act on them here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.

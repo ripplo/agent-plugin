@@ -45,7 +45,7 @@ When a review lists workflows Ripplo could not cover, the app lacks a way for Ri
 /ripplo:cover
 ```
 
-Claude reads each gap and adds the API or route the app is missing, guarded for Ripplo runs. Push, and the next review covers the workflow.
+Claude reads each coverage gap and adds the API or route the app is missing, guarded for Ripplo runs. Push, and the next review covers the workflow.
 
 ## Source
 
