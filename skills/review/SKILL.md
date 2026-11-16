@@ -47,4 +47,4 @@ Issues are independent. Fan out to subagents when there are many, one issue or o
 
 ## Finish
 
-Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `gaps` is not empty, say how many workflows the review could not cover and that `/ripplo:cover <codeReviewId>` adds what they need. Do not act on gaps here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.
+Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `gaps` is not empty, say how many workflows the review could not cover. When some have `appChangeCanCover` true, say that `/ripplo:cover <codeReviewId>` adds what those need. Say that Ripplo cannot cover the rest yet and that the user can contact Ripplo at mail@ripplo.ai about them. Do not act on gaps here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.
