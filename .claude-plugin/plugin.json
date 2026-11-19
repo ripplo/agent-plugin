@@ -1,12 +1,12 @@
 {
   "name": "ripplo",
   "description": "Ripplo reviews pull requests by driving your app end to end in a real browser and reporting what broke, with the evidence. This plugin connects an app to Ripplo and lets Claude Code fix what a review found and add what a review could not cover.",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "author": {
     "name": "Ripplo",
     "url": "https://ripplo.ai"
   },
-  "repository": "https://github.com/ripplo/claude-plugin",
+  "repository": "https://github.com/ripplo/agent-plugin",
   "homepage": "https://ripplo.ai",
   "license": "SEE LICENSE IN LICENSE",
   "keywords": [

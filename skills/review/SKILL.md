@@ -7,6 +7,8 @@ description: "Start, wait for, and address a Ripplo code review. Use when the us
 
 Input: a code review id, optionally followed by `issue <number>`, or a pull request URL to review. Output: the app fixed in the working tree, one short report per issue. When an issue number is named, address that issue only.
 
+A third input is an issue Ripplo sent to a cloud agent. That text lists the issue's fields and evidence and gives a Ripplo token that reads only run recordings. For it, skip Start and wait, start the loop below at step 2 with the fields given, and use only `explain` and `snapshot`. When the change was intended, say so in the pull request description instead of a review comment. Finish by opening the pull request the text asks for.
+
 Everything comes from the CLI. Never query Ripplo any other way. When the input ends with a `Server: <url>` line, it is not part of the id or issue: prefix every `npx ripplo` command with `RIPPLO_SERVER_URL=<url>`.
 
 ```sh
@@ -27,24 +29,24 @@ npx ripplo snapshot <runId> --offset <ms>   # PNG + rrweb-tagged HTML of that fr
 
 `status` prints `stage`, `reviewedSha` (the commit the published review ran on), `latestSha` (the pull request's latest commit), and `failure`. While the review is in progress `stage` is `previewBuilding`, `previewFailed`, `queued`, or `running`. It ends as `published`, `failed` (with `failure` saying why), or `stopped` (canceled, or nothing running and nothing published).
 
-A review takes up to 30 minutes, 45 with `--depth deep`, plus any wait for the preview to deploy. Wait with the Monitor tool at its longest timeout, then keep working or end your turn:
+A review takes up to 30 minutes, 45 with `--depth deep`, plus any wait for the preview to deploy. Wait with this loop. Run it as a background command when your agent has one (the Monitor tool in Claude Code), otherwise as a shell command, at the longest timeout allowed. Then keep working or end your turn:
 
 ```sh
 until out=$(npx ripplo review status <codeReviewId>) || exit 1; grep -qE '"stage": "(published|failed|stopped)"' <<<"$out"; do sleep 30; done
 ```
 
-A monitor stops at its timeout, which is shorter than most reviews. When it expires before the loop ends, start the same monitor again. When the user asks how the review is going, run `status` once and tell them the stage in one line. Ripplo itself waits for the preview, so never check the preview yourself. The loop exits with an error when `status` fails. Run `status` once to see the message and tell the user. When the loop ends, run `status` once more. `published` with `reviewedSha` equal to the commit you expect: run `npx ripplo review <codeReviewId>` and continue with the loop below. `published` with an older `reviewedSha`: the review you waited for ran on an earlier commit, so run `start` again and wait for the new review. `failed` or `stopped`: tell the user.
+The command stops at its timeout, which is shorter than most reviews. When it expires before the loop ends, run the same loop again. When the user asks how the review is going, run `status` once and tell them the stage in one line. Ripplo itself waits for the preview, so never check the preview yourself. The loop exits with an error when `status` fails. Run `status` once to see the message and tell the user. When the loop ends, run `status` once more. `published` with `reviewedSha` equal to the commit you expect: run `npx ripplo review <codeReviewId>` and continue with the loop below. `published` with an older `reviewedSha`: the review you waited for ran on an earlier commit, so run `start` again and wait for the new review. `failed` or `stopped`: tell the user.
 
 ## Loop, per issue
 
 1. **Read the issue.** `title`, `body`, `number` (the Ripplo issue number), `kind` (`regression`, `new`, or `existing`, relative to the reviewed change), `appearance` (`behavior` or `visual`), `workflow` (the workflow slug, or `null` when an explorer trail found the issue), and `evidence` (`runId`, `frameMs`). The body is the reviewer's claim. Verify it, do not trust it.
-2. **See what the reviewer saw.** `npx ripplo snapshot <runId> --offset <frameMs>`, then Read the PNG. The rendered frame is the evidence. A string in `behavior.jsonl` can be the test's own assertion text.
+2. **See what the reviewer saw.** `npx ripplo snapshot <runId> --offset <frameMs>`, then open the PNG. The rendered frame is the evidence. A string in `behavior.jsonl` can be the test's own assertion text.
 3. **See what failed.** `npx ripplo explain <runId>`. Each failure carries its `place` (the starting state or the step), its `detail` (a model failure such as a state mismatch or a missing outcome, a failed element check, or a driver error), the network, console, and span events in the 4s before, and `snapshotOffsetMs` for the frame. A state mismatch lists the expected and observed state. Grep the cached `behavior.jsonl` by `"kind"` only for detail explain did not surface.
 4. **Decide.** Either the app is wrong, or the claim is. Fix the app when the frame shows the broken behavior. When the frame contradicts the claim, say so with the run id and frame, and change nothing. Never change app behavior just to make a finding disappear. When the change was intended and the workflow expects the old behavior, run `npx ripplo review comment <codeReviewId> "<body>" --issue <number>` saying what the app now does. The next round updates the workflow instead of reporting it again.
 5. **Prove the frame, not the diff.** Before saying fixed, reason from the rendered frame and the failing check to the code you changed. Never conclude from a log string or a toast.
 
-Issues are independent. Fan out to subagents when there are many, one issue or one shared file cluster per agent, each told to load `/ripplo:review` first.
+Issues are independent. Fan out to subagents when there are many, one issue or one shared file cluster per agent, each told to load the `ripplo:review` skill first.
 
 ## Finish
 
-Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `uncoverable` is not empty, say how many workflows the review could not cover. When some have `appChangeCanCover` true, say that `/ripplo:cover <codeReviewId>` adds what those need. Say that Ripplo cannot cover the rest yet and that the user can contact Ripplo at mail@ripplo.ai about them. Do not act on them here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.
+Report per issue: fixed, disputed, or intended with the comment id, what changed, run id and frame you checked. When `uncoverable` is not empty, say how many workflows the review could not cover. When some have `appChangeCanCover` true, say that the `ripplo:cover` skill, run with `<codeReviewId>`, adds what those need. Say that Ripplo cannot cover the rest yet and that the user can contact Ripplo at mail@ripplo.ai about them. Do not act on them here. Tell the user to push. A review of the new commit is the proof. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl>` and wait for it as described above.

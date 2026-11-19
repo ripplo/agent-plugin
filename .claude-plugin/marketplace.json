@@ -12,7 +12,7 @@
       "category": "testing",
       "keywords": ["e2e", "testing", "code-review", "qa"],
       "homepage": "https://ripplo.ai",
-      "repository": "https://github.com/ripplo/claude-plugin",
+      "repository": "https://github.com/ripplo/agent-plugin",
       "license": "SEE LICENSE IN LICENSE",
       "author": { "name": "Ripplo", "url": "https://ripplo.ai" }
     }

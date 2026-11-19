@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ripplo",
+  "description": "Ripplo reviews pull requests by driving your app end to end in a real browser and reporting what broke, with the evidence. This plugin lets your coding agent fix what a review found and add what a review could not cover.",
+  "version": "0.21.1",
+  "author": {
+    "name": "Ripplo",
+    "url": "https://ripplo.ai"
+  },
+  "repository": "https://github.com/ripplo/agent-plugin",
+  "homepage": "https://ripplo.ai",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "e2e",
+    "testing",
+    "code-review",
+    "qa"
+  ]
+}

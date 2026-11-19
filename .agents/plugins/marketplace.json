@@ -1,0 +1,12 @@
+{
+  "name": "ripplo",
+  "interface": { "displayName": "Ripplo" },
+  "plugins": [
+    {
+      "name": "ripplo",
+      "source": { "source": "local", "path": "./" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

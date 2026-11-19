@@ -1,6 +1,6 @@
 ---
 name: cover
-description: "Add what Ripplo could not cover. Use when the user pastes `/ripplo:cover`, alone, with a code review id, with `--gap` ids, or with a list of workflows, or asks to make an uncovered workflow testable. Reads each coverage gap, adds the API or route the app lacks so Ripplo can set up and observe that state, and reports per gap."
+description: "Add what Ripplo could not cover. Use when the user runs `ripplo:cover`, alone, with a code review id, with `--gap` ids, or with a list of workflows, or asks to make an uncoverable workflow testable. Reads each coverage gap, adds the API or route the app lacks so Ripplo can set up and observe that state, and reports per gap."
 ---
 
 # Cover the workflows a Ripplo review could not
@@ -40,7 +40,7 @@ One change to the app removes a gap for every workflow it holds back, so start w
 3. **Otherwise add the smallest API that does it.** A route that creates the row or state the gap names, or one that reads it back. Guard it with `ripploRunId` and reject when it returns `undefined`. Never mount it unguarded.
 4. **Keep it application code.** Test it like the rest of the app. Do not write `.ripplo/` files, bindings, or state schemas. The next Ripplo review of the pull request writes those and the workflow for each uncoverable workflow.
 
-Gaps are independent. Fan out to subagents when there are many, one gap or one shared file cluster per agent, each told to load `/ripplo:cover` first.
+Gaps are independent. Fan out to subagents when there are many, one gap or one shared file cluster per agent, each told to load the `ripplo:cover` skill first.
 
 ## Finish
 
@@ -65,4 +65,4 @@ List a workflow under "Now coverable" only when every gap it has is removed, wit
 
 When the branch has no pull request yet, give the user the section to paste when they open one.
 
-Tell the user to push. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl> --depth deep`, with the `prUrl` from `npx ripplo review <codeReviewId>`, and wait for it as `/ripplo:review` describes. The review covers each listed workflow, or keeps it uncoverable and names the gaps that still hold it back.
+Tell the user to push. Once the push is on the pull request, offer to run `npx ripplo review start <prUrl> --depth deep`, with the `prUrl` from `npx ripplo review <codeReviewId>`, and wait for it as the `ripplo:review` skill describes. The review covers each listed workflow, or keeps it uncoverable and names the gaps that still hold it back.
