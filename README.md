@@ -9,7 +9,7 @@ Claude Code:
 ```sh
 claude plugin marketplace add ripplo/agent-plugin
 claude plugin install ripplo@ripplo
-npx ripplo login
+npx ripplo@latest login
 ```
 
 Codex:
@@ -17,20 +17,20 @@ Codex:
 ```sh
 codex plugin marketplace add ripplo/agent-plugin
 codex plugin add ripplo@ripplo
-npx ripplo login
+npx ripplo@latest login
 ```
 
-Cursor has no install command. `npx ripplo setup` writes the plugin to `~/.cursor/plugins/local/ripplo`.
+Cursor has no install command. `npx ripplo@latest setup` writes the plugin to `~/.cursor/plugins/local/ripplo`.
 
 ## Set up
 
 In the app you want reviewed:
 
 ```sh
-npx ripplo setup
+npx ripplo@latest setup
 ```
 
-It connects the repository to Ripplo, creates an OpenID Connect connection, and shows the values to register in your app. Add the sign in with Ripplo connection to your auth library, set the variables on your dev server, deploy, then run `npx ripplo setup --check`, where a Ripplo browser tests sign-in the way review runs do. When the test passes it asks which coding agent you use, installs this plugin there, and offers to open your project in Ripplo.
+It connects the repository to Ripplo, creates an OpenID Connect connection, and shows the values to register in your app. Add the sign in with Ripplo connection to your auth library, set the variables on your dev server, deploy, then run `npx ripplo@latest setup --check`, where a Ripplo browser tests sign-in the way review runs do. When the test passes it asks which coding agent you use, installs this plugin there, and offers to open your project in Ripplo.
 
 ## Use
 
