@@ -7,7 +7,7 @@ description: "Start, wait for, and address a Ripplo code review. Use when the us
 
 Input: a code review id, optionally followed by `issue <number>`, or a pull request URL to review. Output: the app fixed in the working tree, one short report per issue. When an issue number is named, address that issue only.
 
-A third input is an issue Ripplo sent to a cloud agent. That text lists the issue's fields and evidence and gives an `--issue-send` value to add to every `npx ripplo@latest` command. For it, start the loop below at step 2 with the fields given. `issues show <number>` gives the issue's full history. When the change was intended, say so in the pull request description. Open the pull request the text asks for, then review it with Start and wait and the loop, as the text says.
+A third input is an issue Ripplo sent to a cloud agent. That text lists the issue's fields and evidence and says to add `--routine` to every `npx ripplo@latest` command. For it, start the loop below at step 2 with the fields given. `issues show <number>` gives the issue's full history. When the change was intended, say so in the pull request description. Open the pull request the text asks for, then review it with Start and wait and the loop, as the text says.
 
 Everything comes from the CLI. Never query Ripplo any other way. When the input ends with a `Server: <url>` line, it is not part of the id or issue: prefix every `npx ripplo@latest` command with `RIPPLO_SERVER_URL=<url>`.
 
